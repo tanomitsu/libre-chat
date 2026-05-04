@@ -1,0 +1,45 @@
+# Please consult our docs for more info: https://www.librechat.ai/docs/configuration/docker_override
+#
+# このファイルは compose.yaml を上書き/拡張します。
+# 目的:
+#   1. api のホスト公開を 127.0.0.1 のみに限定 (ホスト上の cloudflared 経由でのみ外部公開)
+#   2. DB / 検索系を internal ネットワークに隔離 (egress 禁止)
+#
+# 必要な Docker Compose バージョン: v2.24+ (`!override` タグを使用)
+
+services:
+  # api: ホスト公開を localhost に絞る + backend にも参加 (DB アクセス用)
+  api:
+    volumes:
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+    ports: !override
+      - "127.0.0.1:${PORT}:${PORT}"
+    networks:
+      - default   # 外部 LLM API への egress 用
+      - backend   # mongodb / meilisearch アクセス用
+
+  # DB / 検索系: backend (internal) のみ
+  mongodb:
+    networks:
+      - backend
+
+  meilisearch:
+    networks:
+      - backend
+
+  vectordb:
+    networks:
+      - backend
+
+  # rag_api: vectordb (backend) + 外部 embedding API (default)
+  rag_api:
+    networks:
+      - default
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+    internal: true   # DB 系コンテナはインターネットに egress できない

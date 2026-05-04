@@ -256,13 +256,13 @@ endpoints:
   #   retrievalModels: ["gpt-4-turbo-preview"]
   #   # (optional) Assistant Capabilities available to all users. Omit the ones you wish to exclude. Defaults to list below.
   #   capabilities: ["code_interpreter", "retrieval", "actions", "tools", "image_vision"]
-  # agents:
+  agents:
   #   # (optional) Default recursion depth for agents, defaults to 25
   #   recursionLimit: 50
   #   # (optional) Max recursion depth for agents, defaults to 25
   #   maxRecursionLimit: 100
   #   # (optional) Disable the builder interface for agents
-  #   disableBuilder: false
+    disableBuilder: false
   #   # (optional) Maximum total citations to include in agent responses, defaults to 30
   #   maxCitations: 30
   #   # (optional) Maximum citations per file to include in agent responses, defaults to 7
@@ -271,7 +271,13 @@ endpoints:
   #   # Set to 0.0 to show all sources (no filtering), or higher like 0.7 for stricter filtering
   #   minRelevanceScore: 0.45
   #   # (optional) Agent Capabilities available to all users. Omit the ones you wish to exclude. Defaults to list below.
-  #   capabilities: ["deferred_tools", "execute_code", "file_search", "actions", "tools"]
+    capabilities: [
+      "deferred_tools",
+      # "execute_code",
+      "file_search",
+      "actions",
+      "tools"
+    ]
 
   # Anthropic endpoint configuration with Vertex AI support
   # Use this to run Anthropic Claude models through Google Cloud Vertex AI
@@ -354,98 +360,98 @@ endpoints:
       titleModel: 'llama-3.1-8b-instant'
       modelDisplayLabel: 'groq'
 
-    # Mistral AI Example
-    - name: 'Mistral' # Unique name for the endpoint
-      # For `apiKey` and `baseURL`, you can use environment variables that you define.
-      # recommended environment variables:
-      apiKey: '${MISTRAL_API_KEY}'
-      baseURL: 'https://api.mistral.ai/v1'
+    # # Mistral AI Example
+    # - name: 'Mistral' # Unique name for the endpoint
+    #   # For `apiKey` and `baseURL`, you can use environment variables that you define.
+    #   # recommended environment variables:
+    #   apiKey: '${MISTRAL_API_KEY}'
+    #   baseURL: 'https://api.mistral.ai/v1'
 
-      # Models configuration
-      models:
-        # List of default models to use. At least one value is required.
-        default: ['mistral-tiny', 'mistral-small', 'mistral-medium']
-        # Fetch option: Set to true to fetch models from API.
-        fetch: true # Defaults to false.
+    #   # Models configuration
+    #   models:
+    #     # List of default models to use. At least one value is required.
+    #     default: ['mistral-tiny', 'mistral-small', 'mistral-medium']
+    #     # Fetch option: Set to true to fetch models from API.
+    #     fetch: true # Defaults to false.
 
-      # Optional configurations
+    #   # Optional configurations
 
-      # Title Conversation setting
-      titleConvo: true # Set to true to enable title conversation
+    #   # Title Conversation setting
+    #   titleConvo: true # Set to true to enable title conversation
 
-      # Title Method: Choose between "completion" or "functions".
-      # titleMethod: "completion"  # Defaults to "completion" if omitted.
+    #   # Title Method: Choose between "completion" or "functions".
+    #   # titleMethod: "completion"  # Defaults to "completion" if omitted.
 
-      # Title Model: Specify the model to use for titles.
-      titleModel: 'mistral-tiny' # Defaults to "gpt-3.5-turbo" if omitted.
+    #   # Title Model: Specify the model to use for titles.
+    #   titleModel: 'mistral-tiny' # Defaults to "gpt-3.5-turbo" if omitted.
 
-      # Summarize setting: Set to true to enable summarization.
-      # summarize: false
+    #   # Summarize setting: Set to true to enable summarization.
+    #   # summarize: false
 
-      # Summary Model: Specify the model to use if summarization is enabled.
-      # summaryModel: "mistral-tiny"  # Defaults to "gpt-3.5-turbo" if omitted.
+    #   # Summary Model: Specify the model to use if summarization is enabled.
+    #   # summaryModel: "mistral-tiny"  # Defaults to "gpt-3.5-turbo" if omitted.
 
-      # The label displayed for the AI model in messages.
-      modelDisplayLabel: 'Mistral' # Default is "AI" when not set.
+    #   # The label displayed for the AI model in messages.
+    #   modelDisplayLabel: 'Mistral' # Default is "AI" when not set.
 
-      # Add additional parameters to the request. Default params will be overwritten.
-      # addParams:
-      # safe_prompt: true # This field is specific to Mistral AI: https://docs.mistral.ai/api/
+    #   # Add additional parameters to the request. Default params will be overwritten.
+    #   # addParams:
+    #   # safe_prompt: true # This field is specific to Mistral AI: https://docs.mistral.ai/api/
 
-      # Drop Default params parameters from the request. See default params in guide linked below.
-      # NOTE: For Mistral, it is necessary to drop the following parameters or you will encounter a 422 Error:
-      dropParams: ['stop', 'user', 'frequency_penalty', 'presence_penalty']
+    #   # Drop Default params parameters from the request. See default params in guide linked below.
+    #   # NOTE: For Mistral, it is necessary to drop the following parameters or you will encounter a 422 Error:
+    #   dropParams: ['stop', 'user', 'frequency_penalty', 'presence_penalty']
 
-    # OpenRouter Example
-    - name: 'OpenRouter'
-      # For `apiKey` and `baseURL`, you can use environment variables that you define.
-      # recommended environment variables:
-      apiKey: '${OPENROUTER_KEY}'
-      baseURL: 'https://openrouter.ai/api/v1'
-      headers:
-        x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
-      models:
-        default: ['meta-llama/llama-3-70b-instruct']
-        fetch: true
-      titleConvo: true
-      titleModel: 'meta-llama/llama-3-70b-instruct'
-      # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
-      dropParams: ['stop']
-      modelDisplayLabel: 'OpenRouter'
+    # # OpenRouter Example
+    # - name: 'OpenRouter'
+    #   # For `apiKey` and `baseURL`, you can use environment variables that you define.
+    #   # recommended environment variables:
+    #   apiKey: '${OPENROUTER_KEY}'
+    #   baseURL: 'https://openrouter.ai/api/v1'
+    #   headers:
+    #     x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
+    #   models:
+    #     default: ['meta-llama/llama-3-70b-instruct']
+    #     fetch: true
+    #   titleConvo: true
+    #   titleModel: 'meta-llama/llama-3-70b-instruct'
+    #   # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
+    #   dropParams: ['stop']
+    #   modelDisplayLabel: 'OpenRouter'
 
-    # Helicone Example
-    - name: 'Helicone'
-      # For `apiKey` and `baseURL`, you can use environment variables that you define.
-      # recommended environment variables:
-      apiKey: '${HELICONE_KEY}'
-      baseURL: 'https://ai-gateway.helicone.ai'
-      headers:
-        x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
-      models:
-        default:
-          ['gpt-4o-mini', 'claude-4.5-sonnet', 'llama-3.1-8b-instruct', 'gemini-2.5-flash-lite']
-        fetch: true
-      titleConvo: true
-      titleModel: 'gpt-4o-mini'
-      modelDisplayLabel: 'Helicone'
-      iconURL: https://marketing-assets-helicone.s3.us-west-2.amazonaws.com/helicone.png
+    # # Helicone Example
+    # - name: 'Helicone'
+    #   # For `apiKey` and `baseURL`, you can use environment variables that you define.
+    #   # recommended environment variables:
+    #   apiKey: '${HELICONE_KEY}'
+    #   baseURL: 'https://ai-gateway.helicone.ai'
+    #   headers:
+    #     x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
+    #   models:
+    #     default:
+    #       ['gpt-4o-mini', 'claude-4.5-sonnet', 'llama-3.1-8b-instruct', 'gemini-2.5-flash-lite']
+    #     fetch: true
+    #   titleConvo: true
+    #   titleModel: 'gpt-4o-mini'
+    #   modelDisplayLabel: 'Helicone'
+    #   iconURL: https://marketing-assets-helicone.s3.us-west-2.amazonaws.com/helicone.png
 
-    # Portkey AI Example
-    - name: 'Portkey'
-      apiKey: 'dummy'
-      baseURL: 'https://api.portkey.ai/v1'
-      headers:
-        x-portkey-api-key: '${PORTKEY_API_KEY}'
-        x-portkey-virtual-key: '${PORTKEY_OPENAI_VIRTUAL_KEY}'
-      models:
-        default: ['gpt-4o-mini', 'gpt-4o', 'chatgpt-4o-latest']
-        fetch: true
-      titleConvo: true
-      titleModel: 'current_model'
-      summarize: false
-      summaryModel: 'current_model'
-      modelDisplayLabel: 'Portkey'
-      iconURL: https://images.crunchbase.com/image/upload/c_pad,f_auto,q_auto:eco,dpr_1/rjqy7ghvjoiu4cd1xjbf
+    # # Portkey AI Example
+    # - name: 'Portkey'
+    #   apiKey: 'dummy'
+    #   baseURL: 'https://api.portkey.ai/v1'
+    #   headers:
+    #     x-portkey-api-key: '${PORTKEY_API_KEY}'
+    #     x-portkey-virtual-key: '${PORTKEY_OPENAI_VIRTUAL_KEY}'
+    #   models:
+    #     default: ['gpt-4o-mini', 'gpt-4o', 'chatgpt-4o-latest']
+    #     fetch: true
+    #   titleConvo: true
+    #   titleModel: 'current_model'
+    #   summarize: false
+    #   summaryModel: 'current_model'
+    #   modelDisplayLabel: 'Portkey'
+    #   iconURL: https://images.crunchbase.com/image/upload/c_pad,f_auto,q_auto:eco,dpr_1/rjqy7ghvjoiu4cd1xjbf
 
   # AWS Bedrock Example
   # Note: Bedrock endpoint is configured via environment variables
@@ -575,20 +581,20 @@ endpoints:
 # # See the Custom Configuration Guide for more information on Assistants Config:
 # # https://www.librechat.ai/docs/configuration/librechat_yaml/object_structure/assistants_endpoint
 
-# Web Search Configuration (optional)
-# webSearch:
-#   # Jina Reranking Configuration
-#   jinaApiKey: '${JINA_API_KEY}'  # Your Jina API key
-#   jinaApiUrl: '${JINA_API_URL}'  # Custom Jina API URL (optional, defaults to https://api.jina.ai/v1/rerank)
-#   # Other rerankers
-#   cohereApiKey: '${COHERE_API_KEY}'
-#   # Search providers
-#   serperApiKey: '${SERPER_API_KEY}'
-#   searxngInstanceUrl: '${SEARXNG_INSTANCE_URL}'
-#   searxngApiKey: '${SEARXNG_API_KEY}'
-#   # Content scrapers
-#   firecrawlApiKey: '${FIRECRAWL_API_KEY}'
-#   firecrawlApiUrl: '${FIRECRAWL_API_URL}'
+# Web Search Configuration
+webSearch:
+  # Search provider
+  serperApiKey: '${SERPER_API_KEY}'
+  searchProvider: 'serper'
+  # Content scraper
+  firecrawlApiKey: '${FIRECRAWL_API_KEY}'
+  # firecrawlApiUrl: '${FIRECRAWL_API_URL}'
+  scraperProvider: 'firecrawl'
+  # Reranker
+  jinaApiKey: '${JINA_API_KEY}'
+  # jinaApiUrl: '${JINA_API_URL}'
+  # cohereApiKey: '${COHERE_API_KEY}'
+  rerankerType: 'jina'
 
 # Memory configuration for user memories
 # memory:
